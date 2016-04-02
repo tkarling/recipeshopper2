@@ -8,8 +8,14 @@ import {SearchPipe} from "../../search/pipes/search-pipe";
     selector: 'product-list',
     pipes: [SearchPipe], // StartedPipe,
     directives: [ProductItem],
-    template: `<div>
-        <ul>
+    template: `
+    <style>
+        .product-list {
+          width: 300px;
+        }
+    </style>
+    <div>
+        <ul class="product-list mdl-list">
             <li *ngFor="#product of productService.products | search: term">
             <product-item
                 [product]="product"

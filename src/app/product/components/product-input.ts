@@ -6,18 +6,21 @@ import {ProductModel, EXTRAS} from "../services/product-model";
     selector: 'product-input',
     template: `<div>
         <form (submit)="onSubmit()">
-            <input type="text" [(ngModel)]="productModel.name" placeholder="product">
+            <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" id="product" type="text" [(ngModel)]="productModel.name">
+                <label class="mdl-textfield__label" for="product">Product</label>
+            </div>
         </form>
         </div>`
 })
-export class ProductInput{
+export class ProductInput {
     productModel:ProductModel = new ProductModel();
 
-    constructor(public productService:ProductService){
+    constructor(public productService:ProductService) {
 
     }
 
-    onSubmit(){
+    onSubmit() {
         this.productModel.aisle = this.productModel.aisle || EXTRAS;
         this.productService.addProduct(this.productModel);
         this.productModel = new ProductModel();
