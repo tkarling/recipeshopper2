@@ -13,7 +13,7 @@ export class ProductService {
     ];
 
     addProduct(product:ProductModel) {
-        this.products = [...this.products, product];
+        this.products = [product, ...this.products];
     }
 
     toggleBought(product:ProductModel) {

@@ -14,6 +14,8 @@ const ICON_NOT_CHECKED = 'check_box_outline_blank';
     </style>
     <div class="mdl-list__item mdl-list__item--two-line">
         <span class="mdl-list__item-primary-content">
+            <span [ngClass]="product.status">{{product.amount}} </span>
+            <span [ngClass]="product.status">{{product.unit}} </span>
             <span [ngClass]="product.status">{{product.name}}</span>
             <span class="mdl-list__item-sub-title" [ngClass]="product.status"> {{product.aisle}}</span>
         </span>

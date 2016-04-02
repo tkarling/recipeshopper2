@@ -1,21 +1,27 @@
 import {Component, Input} from "angular2/core";
-import {ProductService} from "../services/product-service";
-import {ProductItem} from "./product-item";
+
 //import {StartedPipe} from "../pipes/started-pipe";
 import {SearchPipe} from "../../search/pipes/search-pipe";
+
+import {ProductItem} from "./product-item";
+import {ProductInput} from "./product-input";
+
+import {ProductService} from "../services/product-service";
 
 @Component({
     selector: 'product-list',
     pipes: [SearchPipe], // StartedPipe,
-    directives: [ProductItem],
+    directives: [ProductItem, ProductInput],
     template: `
     <style>
-        .product-list {
-          width: 300px;
+        .product-list-container {
+          max-width: 600px;
+          margin: auto;
         }
     </style>
-    <div>
-        <ul class="product-list mdl-list">
+    <div class="product-list-container ">
+        <product-input></product-input>
+        <ul class="mdl-list">
             <li *ngFor="#product of productService.products | search: term">
             <product-item
                 [product]="product"
