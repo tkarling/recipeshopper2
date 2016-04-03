@@ -1,25 +1,32 @@
-export const BOUGHT = 'bought';
-export const NOT_BOUGHT = 'not-bought';
+export enum BoughtStatus {
+    bought,
+    not_bought
+}
 
 export const DAIRY = 'DAIRY';
 export const GRAINS = 'GRAINS';
 export const VEGGIES_FRUIT = 'VEGGIES&FRUIT';
 export const EXTRAS = 'EXTRAS';
 
+export const aisles: string[] = [DAIRY, GRAINS, VEGGIES_FRUIT, EXTRAS];
+
 export class ProductModel{
     constructor(
         public name:string = '',
         public aisle:string = '',
-        public status:string = NOT_BOUGHT
+        public amount: string = '',
+        public unit: string = '',
+        public status:BoughtStatus = BoughtStatus.not_bought
     ){
 
     }
 
-    toggle():void{
+    toggle():void {
         this.status =
-            this.status == BOUGHT
-                ? NOT_BOUGHT
-                : BOUGHT;
+            this.status == BoughtStatus.bought
+                ? BoughtStatus.not_bought
+                : BoughtStatus.bought;
     }
 }
+
 

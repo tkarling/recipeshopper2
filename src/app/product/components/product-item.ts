@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from "angular2/core";
-import {ProductModel, BOUGHT} from '../services/product-model';
+import {ProductModel, BoughtStatus} from '../services/product-model';
 
 const ICON_CHECKED = 'done';
 const ICON_NOT_CHECKED = 'check_box_outline_blank';
@@ -14,10 +14,10 @@ const ICON_NOT_CHECKED = 'check_box_outline_blank';
     </style>
     <div class="mdl-list__item mdl-list__item--two-line">
         <span class="mdl-list__item-primary-content">
-            <span [ngClass]="product.status">{{product.amount}} </span>
-            <span [ngClass]="product.status">{{product.unit}} </span>
-            <span [ngClass]="product.status">{{product.name}}</span>
-            <span class="mdl-list__item-sub-title" [ngClass]="product.status"> {{product.aisle}}</span>
+            <span [ngClass]="myStyle(product.status)">{{product.amount}} </span>
+            <span [ngClass]="myStyle(product.status)">{{product.unit}} </span>
+            <span [ngClass]="myStyle(product.status)">{{product.name}}</span>
+            <span class="mdl-list__item-sub-title" [ngClass]="myStyle(product.status)"> {{product.aisle}}</span>
         </span>
         <span class="mdl-list__item-secondary-content">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" (click)="toggle.emit(product)">
@@ -31,7 +31,11 @@ export class ProductItem {
     @Output() toggle = new EventEmitter();
 
     checkboxIcon(status) {
-        return this.product.status === BOUGHT ? ICON_CHECKED: ICON_NOT_CHECKED;
+        return this.product.status === BoughtStatus.bought ? ICON_CHECKED: ICON_NOT_CHECKED;
+    }
+
+    myStyle(status) {
+        return this.product.status === BoughtStatus.bought ? 'bought': 'not-bought';
     }
 }
 

@@ -40,7 +40,8 @@ class AppMenu {
                     <span class="mdl-layout-title">RShopper</span>
                     <div class="mdl-layout-spacer"></div>
                     <search-box (update)="term = $event"></search-box>
-                    <button class="mdl-button mdl-js-button mdl-button--icon">
+                    <button class="mdl-button mdl-js-button mdl-button--icon"
+                    (click)="showAdd = !showAdd">
                         <i class="material-icons">add</i>
                     </button>
                     <app-menu></app-menu>
@@ -54,7 +55,9 @@ class AppMenu {
           </header>
           <main class="mdl-layout__content">
                 <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
-                    <div class="page-content"><product-list [term]="term"></product-list></div>
+                    <div class="page-content">
+                        <product-list [term]="term" [showAdd] ="showAdd"></product-list>
+                    </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-2">
                     <div class="page-content"><!-- Your content goes here --></div>

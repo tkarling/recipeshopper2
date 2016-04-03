@@ -1,7 +1,7 @@
 import {Injectable} from "angular2/core";
 import {ProductModel} from "./product-model";
 
-import {BOUGHT, NOT_BOUGHT,
+import {BoughtStatus,
     DAIRY, GRAINS, VEGGIES_FRUIT, EXTRAS} from './product-model';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class ProductService {
     products:ProductModel[] = [
         new ProductModel("bread", GRAINS),
         new ProductModel("butter", DAIRY),
-        new ProductModel("tomatoes", VEGGIES_FRUIT, BOUGHT)
+        new ProductModel("tomatoes", VEGGIES_FRUIT)
     ];
 
     addProduct(product:ProductModel) {
@@ -18,7 +18,7 @@ export class ProductService {
 
     toggleBought(product:ProductModel) {
         const i = this.products.indexOf(product);
-        const status = product.status == BOUGHT ? NOT_BOUGHT : BOUGHT;
+        const status = product.status == BoughtStatus.bought ? BoughtStatus.not_bought : BoughtStatus.bought;
         //const toggledProduct = Object.assign({}, product, {status});
         const toggledProduct = (<any>Object).assign({}, product, {status});
 

@@ -1,4 +1,4 @@
-import {Component, Inject} from "angular2/core";
+import {Component, Inject, Input} from "angular2/core";
 import {NgForm}    from 'angular2/common';
 
 import {ProductService} from "../services/product-service";
@@ -49,8 +49,8 @@ import {ProductModel, EXTRAS} from "../services/product-model";
     </div>`
 })
 export class ProductInput {
+    @Input() active;
     productModel:ProductModel = new ProductModel();
-    active = true;
 
     constructor(public productService:ProductService) {
 

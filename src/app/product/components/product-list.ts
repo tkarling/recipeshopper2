@@ -20,7 +20,7 @@ import {ProductService} from "../services/product-service";
         }
     </style>
     <div class="product-list-container ">
-        <product-input></product-input>
+        <product-input [active]="showAdd"></product-input>
         <ul class="mdl-list">
             <li *ngFor="#product of productService.products | search: term">
             <product-item
@@ -34,6 +34,7 @@ import {ProductService} from "../services/product-service";
 export class ProductList {
     //@Input() status;
     @Input() term;
+    @Input() showAdd;
     constructor(public productService:ProductService) {
         //console.log(productService.products);
     }
