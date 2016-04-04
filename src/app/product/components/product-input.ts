@@ -10,6 +10,7 @@ import {ProductModel, EXTRAS} from "../services/product-model";
     <style>
         .product-input {
             border: 2px solid #ff3b80;
+            margin-top: 14px;
         }
 
     </style>

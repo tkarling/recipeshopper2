@@ -6,12 +6,18 @@ import {BoughtStatus,
 
 @Injectable()
 export class ProductService {
-    products:ProductModel[] = [
-        new ProductModel("bread", GRAINS),
-        new ProductModel("butter", DAIRY),
-        new ProductModel("tomatoes", VEGGIES_FRUIT)
-    ];
-    editingProduct: ProductModel = null;
+    products:ProductModel[];
+    //= [
+    //    new ProductModel("bread", GRAINS),
+    //    new ProductModel("butter", DAIRY),
+    //    new ProductModel("tomatoes", VEGGIES_FRUIT)
+    //];
+    editingProduct:ProductModel = null;
+
+    constructor() {
+        this.products = JSON.parse(localStorage.getItem("products"));
+    }
+
 
     editing(product:ProductModel) {
         return this.editingProduct === product;
@@ -25,19 +31,26 @@ export class ProductService {
         this.editingProduct = null;
     }
 
-    addProduct(product:ProductModel) {
-        this.products = [product, ...this.products];
+    saveToLocalStorage() {
+        localStorage.setItem("products", JSON.stringify(this.products));
     }
 
-    updateProduct(product: ProductModel, updatedProduct) {
+    addProduct(product:ProductModel) {
+        this.products = [product, ...this.products];
+        this.saveToLocalStorage();
+    }
+
+    updateProduct(product:ProductModel, updatedProduct) {
         //console.log(product, updatedProduct);
         const i = this.products.indexOf(product);
-        setTimeout( () => {
+        setTimeout(() => {
             this.products = [
-            ...this.products.slice(0, i),
-            updatedProduct,
-            ...this.products.slice(i + 1)
-        ]}, 0);
+                ...this.products.slice(0, i),
+                updatedProduct,
+                ...this.products.slice(i + 1)
+            ];
+            this.saveToLocalStorage();
+        }, 0);
     }
 
     toggleBought(product:ProductModel) {

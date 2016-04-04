@@ -32,6 +32,10 @@ class AppMenu {
     directives: [ProductInput, ProductList, SearchBox, AppMenu],
     template: `
     <style>
+        .app-container {
+          max-width: 600px;
+          margin: auto;
+        }
     </style>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
             mdl-layout--fixed-tabs mdl-layout--no-drawer-button">
@@ -56,7 +60,7 @@ class AppMenu {
           <main class="mdl-layout__content">
                 <!--{{diagnostic}}-->
                 <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
-                    <div class="page-content">
+                    <div class="page-content app-container">
                         <product-input [hidden]="! showAdd" ></product-input>
                         <product-list [term]="term"></product-list>
                     </div>

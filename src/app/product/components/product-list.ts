@@ -14,10 +14,6 @@ import {ProductService} from "../services/product-service";
     directives: [ProductItem, ProductInput],
     template: `
     <style>
-        .product-list-container {
-          max-width: 600px;
-          margin: auto;
-        }
     </style>
     <div class="product-list-container ">
         <!--{{diagnostic}}-->
