@@ -1,4 +1,4 @@
-import {Component, Inject, Input} from "angular2/core";
+import {Component, Inject, Input, Output, EventEmitter} from "angular2/core";
 import {NgForm}    from 'angular2/common';
 
 import {ProductService} from "../services/product-service";
@@ -6,8 +6,16 @@ import {ProductModel, EXTRAS} from "../services/product-model";
 
 @Component({
     selector: 'product-input',
-    template: `<div>
-        <form *ngIf="active" (submit)="onSubmit()" #productForm="ngForm">
+    template: `
+    <style>
+        .product-input {
+            border: 2px solid #ff3b80;
+        }
+
+    </style>
+    <div class="product-input">
+        <form (submit)="onSubmit()" #productForm="ngForm">
+            <!--{{diagnostic}}-->
             <div class="mdl-grid">
                 <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--1-col-phone mdl-cell--2-col">
                     <input class="mdl-textfield__input" id="amount" type="text"
@@ -41,7 +49,7 @@ import {ProductModel, EXTRAS} from "../services/product-model";
                  <div class="mdl-cell mdl-cell--1-col">
                     <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored"
                         [disabled]="!productForm.form.valid">
-                        <i class="material-icons">add</i>
+                        <i class="material-icons">{{adding ? 'add' : 'done'}}</i>
                     </button>
                  </div>
             </div>
@@ -49,16 +57,31 @@ import {ProductModel, EXTRAS} from "../services/product-model";
     </div>`
 })
 export class ProductInput {
-    @Input() active;
-    productModel:ProductModel = new ProductModel();
+    @Input() product;
+    @Output() update = new EventEmitter();
+    productModel:ProductModel;
+    adding: boolean;
 
     constructor(public productService:ProductService) {
+    }
 
+    ngOnInit() {
+        this.adding = ! this.product;
+        this.productModel = this.product ? (<any>Object).assign({}, this.product, {editing: true}) : new ProductModel();
+        //console.log('ngOnInit', this.adding, this.product, this.productModel);
     }
 
     onSubmit() {
-        this.productModel.aisle = this.productModel.aisle || EXTRAS;
-        this.productService.addProduct(this.productModel);
-        this.productModel = new ProductModel();
+        if(this.adding) {
+            this.productModel.aisle = this.productModel.aisle || EXTRAS;
+            this.productService.addProduct(this.productModel);
+            this.productModel = new ProductModel();
+        } else { // editing
+            this.productService.stopEditing();
+            this.update.emit(this.productModel);
+        }
     }
+
+    // TODO: Remove this when we're done
+    get diagnostic() { return JSON.stringify(this.adding); }
 }

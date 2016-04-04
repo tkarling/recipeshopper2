@@ -11,21 +11,39 @@ export class ProductService {
         new ProductModel("butter", DAIRY),
         new ProductModel("tomatoes", VEGGIES_FRUIT)
     ];
+    editingProduct: ProductModel = null;
+
+    editing(product:ProductModel) {
+        return this.editingProduct === product;
+    }
+
+    startEditing(product:ProductModel) {
+        this.editingProduct = product;
+    }
+
+    stopEditing() {
+        this.editingProduct = null;
+    }
 
     addProduct(product:ProductModel) {
         this.products = [product, ...this.products];
     }
 
-    toggleBought(product:ProductModel) {
+    updateProduct(product: ProductModel, updatedProduct) {
+        //console.log(product, updatedProduct);
         const i = this.products.indexOf(product);
+        setTimeout( () => {
+            this.products = [
+            ...this.products.slice(0, i),
+            updatedProduct,
+            ...this.products.slice(i + 1)
+        ]}, 0);
+    }
+
+    toggleBought(product:ProductModel) {
         const status = product.status == BoughtStatus.bought ? BoughtStatus.not_bought : BoughtStatus.bought;
-        //const toggledProduct = Object.assign({}, product, {status});
         const toggledProduct = (<any>Object).assign({}, product, {status});
 
-        this.products = [
-            ...this.products.slice(0, i),
-            toggledProduct,
-            ...this.products.slice(i + 1)
-        ];
+        this.updateProduct(product, toggledProduct);
     }
 }

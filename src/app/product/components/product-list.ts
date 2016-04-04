@@ -20,13 +20,15 @@ import {ProductService} from "../services/product-service";
         }
     </style>
     <div class="product-list-container ">
-        <product-input [active]="showAdd"></product-input>
+        <!--{{diagnostic}}-->
         <ul class="mdl-list">
             <li *ngFor="#product of productService.products | search: term">
-            <product-item
+            <product-item [hidden]="productService.editing(product)"
                 [product]="product"
                 (toggle)="productService.toggleBought($event)"
                 ></product-item>
+            <product-input [hidden]="! productService.editing(product)" [product]="product"
+                (update)="productService.updateProduct(product, $event)"></product-input>
             </li>
         </ul>
     </div>`
@@ -34,8 +36,9 @@ import {ProductService} from "../services/product-service";
 export class ProductList {
     //@Input() status;
     @Input() term;
-    @Input() showAdd;
     constructor(public productService:ProductService) {
-        //console.log(productService.products);
     }
+
+    // TODO: Remove this when we're done
+    get diagnostic() { return 'product-list: ' +  JSON.stringify(this.productService.products[0]); }
 }

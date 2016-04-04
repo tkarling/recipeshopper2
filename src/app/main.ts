@@ -54,9 +54,11 @@ class AppMenu {
                 </div>
           </header>
           <main class="mdl-layout__content">
+                <!--{{diagnostic}}-->
                 <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
                     <div class="page-content">
-                        <product-list [term]="term" [showAdd] ="showAdd"></product-list>
+                        <product-input [hidden]="! showAdd" ></product-input>
+                        <product-list [term]="term"></product-list>
                     </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-2">
@@ -69,6 +71,10 @@ class AppMenu {
     </div>`
 })
 class App {
+    showAdd:  boolean = false;
+
+    // TODO: Remove this when we're done
+    get diagnostic() { return 'app: ' + JSON.stringify(this.showAdd); }
 }
 
 bootstrap(App, [ProductService]);
