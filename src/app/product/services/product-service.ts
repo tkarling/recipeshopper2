@@ -43,7 +43,7 @@ export class ProductService {
         try {
             localStorage.setItem("products", JSON.stringify(this.products));
         } catch (err) {
-            console.warn('error writing to loca storage', err);
+            console.warn('error writing to local storage', err);
         }
     }
 
@@ -63,6 +63,16 @@ export class ProductService {
             ];
             this.saveToLocalStorage();
         }, 0);
+    }
+
+    deleteProduct(product:ProductModel) {
+        const i = this.products.indexOf(product);
+        //console.log('deleteProduct', product, i);
+            this.products = [
+                ...this.products.slice(0, i),
+                ...this.products.slice(i + 1)
+            ];
+            this.saveToLocalStorage();
     }
 
     toggleBought(product:ProductModel) {

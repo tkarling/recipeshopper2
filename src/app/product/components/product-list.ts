@@ -22,6 +22,7 @@ import {ProductService} from "../services/product-service";
             <product-item [hidden]="productService.editing(product)"
                 [product]="product"
                 (toggle)="productService.toggleBought($event)"
+                (remove)="productService.deleteProduct(product)"
                 ></product-item>
             <product-input [hidden]="! productService.editing(product)" [product]="product"
                 (update)="productService.updateProduct(product, $event)"></product-input>
@@ -32,9 +33,12 @@ import {ProductService} from "../services/product-service";
 export class ProductList {
     //@Input() status;
     @Input() term;
+
     constructor(public productService:ProductService) {
     }
 
     // TODO: Remove this when we're done
-    get diagnostic() { return 'product-list: ' +  JSON.stringify(this.productService.products[0]); }
+    get diagnostic() {
+        return 'product-list: ' + JSON.stringify(this.productService.products[0]);
+    }
 }

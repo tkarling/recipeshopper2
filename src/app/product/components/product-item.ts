@@ -13,8 +13,17 @@ const ICON_NOT_CHECKED = 'check_box_outline_blank';
         .bought {
             text-decoration: line-through;
         }
+        .left-content {
+            margin-right: 16px;
+            margin-left: 0px;
+        }
     </style>
     <div class="mdl-list__item mdl-list__item--two-line">
+        <span class="mdl-list__item-secondary-content left-content">
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" (click)="toggle.emit(product)">
+                <i class="material-icons">{{checkboxIcon(product.status)}}</i>
+            </button>
+        </span>
         <span class="mdl-list__item-primary-content" (click)="productService.startEditing(product)">
             <span [ngClass]="myStyle(product.status)">{{product.amount}} </span>
             <span [ngClass]="myStyle(product.status)">{{product.unit}} </span>
@@ -22,8 +31,8 @@ const ICON_NOT_CHECKED = 'check_box_outline_blank';
             <span class="mdl-list__item-sub-title" [ngClass]="myStyle(product.status)"> {{product.aisle}}</span>
         </span>
         <span class="mdl-list__item-secondary-content">
-            <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" (click)="toggle.emit(product)">
-                <i class="material-icons">{{checkboxIcon(product.status)}}</i>
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--accent" (click)="remove.emit(product)">
+                <i class="material-icons">delete</i>
             </button>
         </span>
     </div>`
@@ -31,6 +40,7 @@ const ICON_NOT_CHECKED = 'check_box_outline_blank';
 export class ProductItem {
     @Input() product: ProductModel;
     @Output() toggle = new EventEmitter();
+    @Output() remove = new EventEmitter();
     constructor(public productService:ProductService) {
     }
 
@@ -43,5 +53,3 @@ export class ProductItem {
     }
 }
 
-//<input type="checkbox" class="mdl-checkbox__input" (change)="toggle.emit(product)" [checked]="product.status">
-// {{product.status === 'bought' ? 'done': 'check_box_outline_blank'}}
