@@ -11,17 +11,19 @@ export class ProductService {
 
     constructor() {
         if (localStorage) {
-            const productsInLocalStorage = JSON.parse(localStorage.getItem("products"));
-            productsInLocalStorage.forEach((product) => {
-                this.products.push(this.deserialize(product, ProductModel));
-            });
+            try {
+                const productsInLocalStorage = JSON.parse(localStorage.getItem("products"));
+                if(productsInLocalStorage && productsInLocalStorage.length > 0) {
+                    productsInLocalStorage.forEach((product) => {
+                        this.products.push(this.deserialize(product, ProductModel));
+                    });
+                }
+            } catch (err) {
+                console.log('error reading from local storage', err);
+                this.products = [];
+            }
         } else {
             console.log('no local storage');
-            this.products = [
-                new ProductModel("bread", GRAINS),
-                new ProductModel("butter", DAIRY),
-                new ProductModel("tomatoes", VEGGIES_FRUIT)
-            ];
         }
     }
 
@@ -38,7 +40,11 @@ export class ProductService {
     }
 
     saveToLocalStorage() {
-        localStorage.setItem("products", JSON.stringify(this.products));
+        try {
+            localStorage.setItem("products", JSON.stringify(this.products));
+        } catch (err) {
+            console.warn('error writing to loca storage', err);
+        }
     }
 
     addProduct(product:ProductModel) {
