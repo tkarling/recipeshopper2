@@ -21,7 +21,7 @@ const ICON_NOT_CHECKED = 'check_box_outline_blank';
     <div class="mdl-list__item mdl-list__item--two-line">
         <span class="mdl-list__item-secondary-content left-content">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" (click)="toggle.emit(product)">
-                <i class="material-icons">{{checkboxIcon(product.status)}}</i>
+                <i class="material-icons">{{checkboxIcon(checked)}}</i>
             </button>
         </span>
         <span class="mdl-list__item-primary-content" (click)="productService.startEditing(product)">
@@ -39,17 +39,19 @@ const ICON_NOT_CHECKED = 'check_box_outline_blank';
 })
 export class ProductItem {
     @Input() product: ProductModel;
+    @Input() checked: boolean;
+    @Input() lineThrough: boolean;
     @Output() toggle = new EventEmitter();
     @Output() remove = new EventEmitter();
     constructor(public productService:ProductService) {
     }
 
     checkboxIcon(status) {
-        return this.product.status === BoughtStatus.bought ? ICON_CHECKED: ICON_NOT_CHECKED;
+        return status ? ICON_CHECKED: ICON_NOT_CHECKED;
     }
 
     myStyle(status) {
-        return this.product.status === BoughtStatus.bought ? 'bought': 'not-bought';
+        return this.lineThrough && this.product.status === BoughtStatus.bought ? 'bought': 'not-bought';
     }
 }
 

@@ -13,7 +13,7 @@ export class ProductService {
         if (localStorage) {
             try {
                 const productsInLocalStorage = JSON.parse(localStorage.getItem("products"));
-                if(productsInLocalStorage && productsInLocalStorage.length > 0) {
+                if (productsInLocalStorage && productsInLocalStorage.length > 0) {
                     productsInLocalStorage.forEach((product) => {
                         this.products.push(this.deserialize(product, ProductModel));
                     });
@@ -25,6 +25,16 @@ export class ProductService {
         } else {
             console.log('no local storage');
         }
+    }
+
+    get shoppings() {
+        return this.products.filter((product) => {
+            return product.onList;
+        });
+    }
+
+    get favorites() {
+        return this.products;
     }
 
     editing(product:ProductModel) {
@@ -68,19 +78,28 @@ export class ProductService {
     deleteProduct(product:ProductModel) {
         const i = this.products.indexOf(product);
         //console.log('deleteProduct', product, i);
-            this.products = [
-                ...this.products.slice(0, i),
-                ...this.products.slice(i + 1)
-            ];
-            this.saveToLocalStorage();
+        this.products = [
+            ...this.products.slice(0, i),
+            ...this.products.slice(i + 1)
+        ];
+        this.saveToLocalStorage();
     }
 
     toggleBought(product:ProductModel) {
-        const status = product.status == BoughtStatus.bought ? BoughtStatus.not_bought : BoughtStatus.bought;
+        const status = product.status === BoughtStatus.bought ? BoughtStatus.not_bought : BoughtStatus.bought;
         const toggledProduct = (<any>Object).assign({}, product, {status});
 
         this.updateProduct(product, toggledProduct);
     }
+
+    toggleOnList(product:ProductModel) {
+        const onList = !product.onList;
+        const status = BoughtStatus.not_bought;
+        const toggledProduct = (<any>Object).assign({}, product, {onList, status});
+
+        this.updateProduct(product, toggledProduct);
+    }
+
 
     deserialize(json, clazz) {
         var instance = new clazz();

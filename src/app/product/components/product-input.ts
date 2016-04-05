@@ -19,7 +19,7 @@ import {ProductModel, EXTRAS} from "../services/product-model";
             <!--{{diagnostic}}-->
             <div class="mdl-grid">
                 <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--1-col-phone mdl-cell--2-col">
-                    <input class="mdl-textfield__input" id="amount" type="text"
+                    <input class="mdl-textfield__input" id="amount" type="number"
                         [(ngModel)]="productModel.amount"
                         ngControl="amount">
                     <label class="mdl-textfield__label" for="amount">Amount</label>

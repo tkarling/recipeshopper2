@@ -7,7 +7,7 @@ import {Component} from "angular2/core";
 import {SearchBox} from "./search/components/search-box";
 
 import {ProductInput} from "./product/components/product-input";
-import {ProductList} from "./product/components/product-list";
+import {ProductList, ProductListType} from "./product/components/product-list";
 
 
 import {ProductService} from "./product/services/product-service";
@@ -62,11 +62,14 @@ class AppMenu {
                 <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
                     <div class="page-content app-container">
                         <product-input [hidden]="! showAdd" ></product-input>
-                        <product-list [term]="term"></product-list>
+                        <product-list [term]="term" [type]="ProductListType.shopping"></product-list>
                     </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-2">
-                    <div class="page-content">Hello from Favorites</div>
+                    <div class="page-content app-container">
+                        <product-input [hidden]="! showAdd" ></product-input>
+                        <product-list [term]="term" [type]="ProductListType.favorites"></product-list>
+                    </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-3">
                     <div class="page-content">Hello From Recipies</div>
@@ -77,8 +80,12 @@ class AppMenu {
 class App {
     showAdd:  boolean = false;
 
+    get ProductListType() {
+        return ProductListType;
+    }
+
     // TODO: Remove this when we're done
-    get diagnostic() { return 'app: ' + JSON.stringify(this.showAdd); }
+    get diagnostic() { return 'app: ' + JSON.stringify(ProductListType.shopping); }
 }
 
 bootstrap(App, [ProductService]);
