@@ -13,6 +13,10 @@ import {ProductModel, EXTRAS} from "../services/product-model";
             margin-top: 14px;
         }
 
+        .show-error {
+            visibility: visible;
+        }
+
     </style>
     <div class="product-input">
         <form (submit)="onSubmit()" #productForm="ngForm">
@@ -20,22 +24,20 @@ import {ProductModel, EXTRAS} from "../services/product-model";
             <div class="mdl-grid">
                 <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--1-col-phone mdl-cell--2-col">
                     <input class="mdl-textfield__input" id="amount" type="number"
-                        [(ngModel)]="productModel.amount"
-                        ngControl="amount">
-                    <label class="mdl-textfield__label" for="amount">Amount</label>
+                        [(ngModel)]="productModel.amount">
+                    <label [hidden]="productModel.amount" class="mdl-textfield__label" for="amount">Amount</label>
                 </div>
                 <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--1-col-phone mdl-cell--2-col">
                     <input class="mdl-textfield__input" id="unit" type="text"
-                        [(ngModel)]="productModel.unit"
-                        ngControl="unit">
-                    <label class="mdl-textfield__label" for="unit">Unit</label>
+                        [(ngModel)]="productModel.unit">
+                    <label [hidden]="productModel.unit" class="mdl-textfield__label" for="unit">Unit</label>
                 </div>
                 <div class="mdl-textfield mdl-js-textfield  mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--8-col-desktop">
                     <input class="mdl-textfield__input" id="product" type="text" required
                         [(ngModel)]="productModel.name"
                         ngControl="name"  #name="ngForm">
-                    <label class="mdl-textfield__label" for="product">Product</label>
-                    <span class="mdl-textfield__error">
+                    <label [hidden]="productModel.name" class="mdl-textfield__label" for="product">Product</label>
+                    <span class="mdl-textfield__error show-error" [hidden]="productModel.name">
                         Name is required
                     </span>
                 </div>
@@ -43,9 +45,8 @@ import {ProductModel, EXTRAS} from "../services/product-model";
             <div class="mdl-grid">
                  <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--3-col-phone mdl-cell--7-col-tablet mdl-cell--11-col-desktop">
                     <input class="mdl-textfield__input" id="aisle" type="text"
-                    [(ngModel)]="productModel.aisle"
-                    ngControl="aisle"  #aisle="ngForm">
-                    <label class="mdl-textfield__label" for="aisle">Aisle</label>
+                    [(ngModel)]="productModel.aisle">
+                    <label [hidden]="productModel.aisle" class="mdl-textfield__label" for="aisle">Aisle</label>
                  </div>
                  <div class="mdl-cell mdl-cell--1-col">
                     <button type="submit" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored"
