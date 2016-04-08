@@ -27,6 +27,11 @@ export class ProductService {
         }
     }
 
+    $setProducts(products) {
+        // for unit testing
+        this.products = products;
+    }
+
     get shoppings() {
         return this.products.filter((product) => {
             return product.onList;
@@ -62,7 +67,7 @@ export class ProductService {
         this.saveToLocalStorage();
     }
 
-    updateProduct(product:ProductModel, updatedProduct) {
+    updateProduct(product:ProductModel, updatedProduct: ProductModel) {
         //console.log(product, updatedProduct);
         const i = this.products.indexOf(product);
         setTimeout(() => {
@@ -87,15 +92,15 @@ export class ProductService {
 
     toggleBought(product:ProductModel) {
         const status = product.status === BoughtStatus.bought ? BoughtStatus.not_bought : BoughtStatus.bought;
-        const toggledProduct = (<any>Object).assign({}, product, {status});
+        const toggledProduct:ProductModel = <ProductModel>(<any>Object).assign({}, product, {status});
 
-        this.updateProduct(product, toggledProduct);
+        this.updateProduct(product, <ProductModel>toggledProduct);
     }
 
     toggleOnList(product:ProductModel) {
         const onList = !product.onList;
         const status = BoughtStatus.not_bought;
-        const toggledProduct = (<any>Object).assign({}, product, {onList, status});
+        const toggledProduct:ProductModel = <ProductModel>(<any>Object).assign({}, product, {onList, status});
 
         this.updateProduct(product, toggledProduct);
     }
