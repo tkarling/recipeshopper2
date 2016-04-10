@@ -1,35 +1,29 @@
-import {Injectable} from "angular2/core";
+import {Injectable, Inject} from "angular2/core";
 import {ProductModel} from "./product-model";
+
+import {Repository, REPOSITORY_TOKEN} from '../../services/repository';
+import {LocalStorageService} from '../../services/local-storage-service';
 
 import {BoughtStatus,
     DAIRY, GRAINS, VEGGIES_FRUIT, EXTRAS} from './product-model';
 
 @Injectable()
 export class ProductService {
+    repository:Repository;
     products:ProductModel[] = [];
     editingProduct:ProductModel = null;
 
-    constructor() {
-        if (localStorage) {
-            try {
-                const productsInLocalStorage = JSON.parse(localStorage.getItem("products"));
-                if (productsInLocalStorage && productsInLocalStorage.length > 0) {
-                    productsInLocalStorage.forEach((product) => {
-                        this.products.push(this.deserialize(product, ProductModel));
-                    });
-                }
-            } catch (err) {
-                console.log('error reading from local storage', err);
-                this.products = [];
-            }
+    constructor(@Inject(REPOSITORY_TOKEN) repository:Repository) {
+        if (repository && repository.getItems) {
+            this.repository = repository;
+            repository.getItems().then((items) => {
+                this.products = items;
+            }).catch((err)=> {
+                console.warn('ProductService: error getting items', err);
+            });
         } else {
-            console.log('no local storage');
+            console.warn('ProductService: no repository');
         }
-    }
-
-    $setProducts(products) {
-        // for unit testing
-        this.products = products;
     }
 
     get shoppings() {
@@ -40,6 +34,12 @@ export class ProductService {
 
     get favorites() {
         return this.products;
+    }
+
+    refreshProducts() {
+        return this.repository.getItems().then((items) => {
+            this.products = items;
+        });
     }
 
     editing(product:ProductModel) {
@@ -54,47 +54,29 @@ export class ProductService {
         this.editingProduct = null;
     }
 
-    saveToLocalStorage() {
-        try {
-            localStorage.setItem("products", JSON.stringify(this.products));
-        } catch (err) {
-            console.warn('error writing to local storage', err);
-        }
-    }
-
     addProduct(product:ProductModel) {
-        this.products = [product, ...this.products];
-        this.saveToLocalStorage();
+        return this.repository.addItem(product).then(() => {
+            return this.refreshProducts();
+        });
     }
 
-    updateProduct(product:ProductModel, updatedProduct: ProductModel) {
-        //console.log(product, updatedProduct);
-        const i = this.products.indexOf(product);
-        setTimeout(() => {
-            this.products = [
-                ...this.products.slice(0, i),
-                updatedProduct,
-                ...this.products.slice(i + 1)
-            ];
-            this.saveToLocalStorage();
-        }, 0);
+    updateProduct(product:ProductModel, updatedProduct:ProductModel) {
+        return this.repository.updateItem(product, updatedProduct).then(() => {
+            return this.refreshProducts();
+        });
     }
 
     deleteProduct(product:ProductModel) {
-        const i = this.products.indexOf(product);
-        //console.log('deleteProduct', product, i);
-        this.products = [
-            ...this.products.slice(0, i),
-            ...this.products.slice(i + 1)
-        ];
-        this.saveToLocalStorage();
+        return this.repository.deleteItem(product).then(() => {
+            return this.refreshProducts();
+        });
     }
 
     toggleBought(product:ProductModel) {
         const status = product.status === BoughtStatus.bought ? BoughtStatus.not_bought : BoughtStatus.bought;
         const toggledProduct:ProductModel = <ProductModel>(<any>Object).assign({}, product, {status});
 
-        this.updateProduct(product, <ProductModel>toggledProduct);
+        return this.updateProduct(product, <ProductModel>toggledProduct);
     }
 
     toggleOnList(product:ProductModel) {
@@ -102,23 +84,7 @@ export class ProductService {
         const status = BoughtStatus.not_bought;
         const toggledProduct:ProductModel = <ProductModel>(<any>Object).assign({}, product, {onList, status});
 
-        this.updateProduct(product, toggledProduct);
-    }
-
-
-    deserialize(json, clazz) {
-        var instance = new clazz();
-        for (var prop in json) {
-            if (!json.hasOwnProperty(prop)) {
-                continue;
-            }
-            if (typeof json[prop] === 'object') {
-                instance[prop] = this.deserialize(json[prop], clazz[prop]);
-            } else {
-                instance[prop] = json[prop];
-            }
-        }
-        return instance;
+        return this.updateProduct(product, toggledProduct);
     }
 
 }

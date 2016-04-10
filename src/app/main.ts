@@ -1,16 +1,17 @@
 /// <reference path="../../node_modules/angular2/typings/browser.d.ts" />
 
 import {bootstrap} from "angular2/platform/browser";
-import {Component} from "angular2/core";
-//import {Control} from "angular2/common";
+import {Component, provide, OpaqueToken} from "angular2/core";
 
 import {SearchBox} from "./search/components/search-box";
 
 import {ProductInput} from "./product/components/product-input";
 import {ProductList, ProductListType} from "./product/components/product-list";
 
-
+import {LocalStorageService} from "./services/local-storage-service";
+import {Repository, REPOSITORY_TOKEN} from './services/repository';
 import {ProductService} from "./product/services/product-service";
+
 
 @Component({
     selector: 'app-menu',
@@ -30,6 +31,7 @@ class AppMenu {
 @Component({
     selector: 'app',
     directives: [ProductInput, ProductList, SearchBox, AppMenu],
+    providers: [provide(REPOSITORY_TOKEN, {useClass: LocalStorageService}), ProductService],
     template: `
     <style>
         .app-container {
@@ -88,5 +90,5 @@ class App {
     get diagnostic() { return 'app: ' + JSON.stringify(ProductListType.shopping); }
 }
 
-bootstrap(App, [ProductService]);
+bootstrap(App);
 
