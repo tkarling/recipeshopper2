@@ -25,6 +25,15 @@ describe('ProductService Tests', () => {
         done();
     });
 
+    it('Should add item to Firebase', (done) => {
+        service.addItem(5).then((items) => {
+            console.log(items);
+            expect(items.length).toBe(1);
+            expect(items[0].name).toEqual("Bulla");
+        });
+        done();
+    });
+
     it('Should get items', (done) => {
         service.getItems().then((items) => {
             expect(items.length).toBe(2);
