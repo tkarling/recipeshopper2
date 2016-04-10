@@ -1,4 +1,4 @@
-import '../../../test/test-helper';
+import '../../../test/test-helper.ts';
 
 import {ProductModel, DAIRY, GRAINS, VEGGIES_FRUIT} from './product-model';
 import {ProductService} from './product-service';

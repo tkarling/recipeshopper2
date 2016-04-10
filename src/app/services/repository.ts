@@ -1,6 +1,6 @@
-interface Repository {
-    getItems(): Promise
-    addItem(item): Promise
-    deleteItem(item): Promise
-    updateItem(item): Promise
+export interface Repository {
+    getItems(): Promise<Array<any>>
+    addItem(item): Promise<any>
+    deleteItem(item): Promise<any>
+    updateItem(item): Promise<any>
 }
