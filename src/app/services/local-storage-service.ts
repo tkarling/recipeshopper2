@@ -4,8 +4,8 @@ import {Repository} from './repository';
 
 @Injectable()
 export class LocalStorageService implements Repository {
-    private storageKey:string='products';
-    private items: Object[]=[];
+    private storageKey:string = 'products';
+    private items:Object[] = [];
 
     getFromLocalStorage() {
         if (localStorage) {
@@ -29,7 +29,7 @@ export class LocalStorageService implements Repository {
     }
 
     getItems():Promise<any[]> {
-        if(this.items.length === 0) {
+        if (this.items.length === 0) {
             this.getFromLocalStorage();
         }
         return Promise.resolve(this.items);
@@ -52,13 +52,17 @@ export class LocalStorageService implements Repository {
     }
 
     updateItem(item, updatedItem):Promise<any> {
-        const i = this.items.indexOf(item);
-        this.items = [
-            ...this.items.slice(0, i),
-            updatedItem,
-            ...this.items.slice(i + 1)
-        ];
-        this.saveToLocalStorage();
-        return Promise.resolve(updatedItem);
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const i = this.items.indexOf(item);
+                this.items = [
+                    ...this.items.slice(0, i),
+                    updatedItem,
+                    ...this.items.slice(i + 1)
+                ];
+                this.saveToLocalStorage();
+                return resolve(updatedItem);
+            });
+        });
     }
 }
