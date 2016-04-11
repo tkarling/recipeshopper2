@@ -1,5 +1,8 @@
 import '../../../test/test-helper.ts';
+
 import {Repository} from '../../services/repository';
+import {MockRepository} from '../../services/mock-repository';
+
 import {ProductModel, BoughtStatus, DAIRY, GRAINS, VEGGIES_FRUIT} from './product-model';
 import {ProductService} from './product-service';
 import {Observable} from 'rxjs';
@@ -10,53 +13,7 @@ let product3Del:ProductModel = new ProductModel("tomatoes", VEGGIES_FRUIT);
 let product4Add:ProductModel = new ProductModel("broccoli", VEGGIES_FRUIT);
 const products:ProductModel[] = [product1Buy, product2NS, product3Del];
 
-class TestRepository implements Repository {
-
-    private items:Object[] = [];
-
-    getItems():Promise<any[]> {
-        this.items = this.items.length > 0 ? this.items : products;
-        return Promise.resolve(this.items);
-    }
-
-    addItem(item):Promise<any> {
-        this.items = [item, ...this.items];
-        return Promise.resolve(item);
-    }
-
-    deleteItem(item):Promise<any> {
-        const i = this.items.indexOf(item);
-        this.items = [
-            ...this.items.slice(0, i),
-            ...this.items.slice(i + 1)
-        ];
-        return Promise.resolve(item);
-    }
-
-    updateItem(item, updatedItem):Promise<any> {
-        const i = this.items.indexOf(item);
-        this.items = [
-            ...this.items.slice(0, i),
-            updatedItem,
-            ...this.items.slice(i + 1)
-        ];
-        return Promise.resolve(updatedItem);
-    }
-
-    getItems$():Observable<any[]> {
-        return undefined;
-    }
-
-    deleteItem$(item):Observable<any> {
-        return undefined;
-    }
-
-    updateItem$(item, updatedItem):Observable<any> {
-        return undefined;
-    }
-}
-
-const service:ProductService = new ProductService(new TestRepository());
+const service:ProductService = new ProductService(new MockRepository(products));
 
 describe('ProductService Tests', () => {
     let noOfProducts, noOfShoppings, noOfFavorites;

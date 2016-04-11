@@ -12,5 +12,6 @@ interface Repository {
 }
 
 const REPOSITORY_TOKEN:OpaqueToken = new OpaqueToken('Repository');
+const RECIPE_REPOSITORY_TOKEN:OpaqueToken = new OpaqueToken('Repository');
 
-export {Repository, REPOSITORY_TOKEN};
+export {Repository, REPOSITORY_TOKEN, RECIPE_REPOSITORY_TOKEN};
