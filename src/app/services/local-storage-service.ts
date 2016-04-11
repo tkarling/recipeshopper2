@@ -1,11 +1,12 @@
 import {Injectable} from "angular2/core";
-
 import {Repository} from './repository';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class LocalStorageService implements Repository {
-    private storageKey:string='products';
-    private items: Object[]=[];
+
+    private storageKey:string = 'products';
+    private items:Object[] = [];
 
     getFromLocalStorage() {
         if (localStorage) {
@@ -29,7 +30,7 @@ export class LocalStorageService implements Repository {
     }
 
     getItems():Promise<any[]> {
-        if(this.items.length === 0) {
+        if (this.items.length === 0) {
             this.getFromLocalStorage();
         }
         return Promise.resolve(this.items);
@@ -60,5 +61,17 @@ export class LocalStorageService implements Repository {
         ];
         this.saveToLocalStorage();
         return Promise.resolve(updatedItem);
+    }
+
+    getItems$():Observable<any[]> {
+        return undefined;
+    }
+
+    deleteItem$(item):Observable<any> {
+        return undefined;
+    }
+
+    updateItem$(item, updatedItem):Observable<any> {
+        return undefined;
     }
 }
