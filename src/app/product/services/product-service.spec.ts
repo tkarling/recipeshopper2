@@ -1,4 +1,4 @@
-import '../../../test/test-helper';
+import '../../../test/test-helper.ts';
 
 import {Repository} from '../../services/repository';
 
