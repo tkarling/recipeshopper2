@@ -1,6 +1,6 @@
 import {Injectable} from "angular2/core";
-
 import {Repository} from './repository';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class LocalStorageService implements Repository {
@@ -64,5 +64,17 @@ export class LocalStorageService implements Repository {
                 return resolve(updatedItem);
             });
         });
+    }
+
+    getItems$():Observable<any[]> {
+        return undefined;
+    }
+
+    deleteItem$(item):Observable<any> {
+        return undefined;
+    }
+
+    updateItem$(item, updatedItem):Observable<any> {
+        return undefined;
     }
 }

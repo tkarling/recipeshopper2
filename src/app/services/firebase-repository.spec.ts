@@ -17,8 +17,9 @@ describe('ProductService Tests', () => {
     let favorites:ProductModel[];
 
     beforeAll(() => {
-        // service.$setProducts(products);
-        // service.toggleOnList(product2NS);
+        service.getItems$().subscribe((items) => {
+            console.log("Berofeall-Items=", items);
+        })
     });
 
     beforeEach((done) => {
@@ -26,23 +27,28 @@ describe('ProductService Tests', () => {
     });
 
     it('Should add item to Firebase', (done) => {
-        service.addItem(5).then((items) => {
-            console.log(items);
+        service.addItem(new ProductModel("Kakki")).then((items) => {
             expect(items.length).toBe(1);
             expect(items[0].name).toEqual("Bulla");
+            done();
         });
-        done();
     });
 
-    it('Should get items', (done) => {
-        service.getItems().then((items) => {
-            expect(items.length).toBe(2);
-            expect(items[0].name).toEqual("Bulla");
-            done();
-        }).catch((error) => {
-            console.log(error);
-            done();
-        });
+    // it('Should get items', (done) => {
+    //     service.getItems().then((items) => {
+    //         expect(items.length).toBe(0);
+    //         // expect(items[0].name).toEqual("Bulla");
+    //         done();
+    //     }).catch((error) => {
+    //         console.log(error);
+    //         done();
+    //     });
+    // });
+
+    it('Should get observable', (done) => {
+        service.getItems$().subscribe((items) => {
+            console.log("Items=", items);
+        })
     });
 
     // it('Should return favorites', (done) => {

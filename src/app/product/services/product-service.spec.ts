@@ -1,9 +1,8 @@
 import '../../../test/test-helper.ts';
-
 import {Repository} from '../../services/repository';
-
 import {ProductModel, BoughtStatus, DAIRY, GRAINS, VEGGIES_FRUIT} from './product-model';
 import {ProductService} from './product-service';
+import {Observable} from 'rxjs';
 
 let product1Buy:ProductModel = new ProductModel("bread", GRAINS);
 let product2NS:ProductModel = new ProductModel("butter", DAIRY);
@@ -12,6 +11,7 @@ let product4Add:ProductModel = new ProductModel("broccoli", VEGGIES_FRUIT);
 const products:ProductModel[] = [product1Buy, product2NS, product3Del];
 
 class TestRepository implements Repository {
+
     private items:Object[] = [];
 
     getItems():Promise<any[]> {
@@ -43,6 +43,17 @@ class TestRepository implements Repository {
         return Promise.resolve(updatedItem);
     }
 
+    getItems$():Observable<any[]> {
+        return undefined;
+    }
+
+    deleteItem$(item):Observable<any> {
+        return undefined;
+    }
+
+    updateItem$(item, updatedItem):Observable<any> {
+        return undefined;
+    }
 }
 
 const service:ProductService = new ProductService(new TestRepository());
@@ -77,7 +88,7 @@ describe('ProductService Tests', () => {
     });
 
     it('Should return shoppings', (done) => {
-        expect(service.shoppings.length).toEqual(noOfProducts-1);
+        expect(service.shoppings.length).toEqual(noOfProducts - 1);
         done();
     });
 

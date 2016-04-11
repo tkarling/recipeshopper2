@@ -1,9 +1,11 @@
 # recipeshopper2
 
-From https://github.com/angular/angularfire2
+Angular 2 based recipeshopper using Firebase as a DB. Relying on vanilla Firebase JS library
+instead of using AngularFire.
 
-npm install angularfire2 --save
+To get Firebase module, type:
+
+```javascript
 npm install typings -g
 typings install --save --ambient firebase
-
-May be needed: npm install -g angular-cli
+```
