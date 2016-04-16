@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class LocalStorageService implements Repository {
-    private storageKey:string = 'products';
+    protected storageKey:string = 'products';
     private items:Object[] = [];
 
     getFromLocalStorage() {
@@ -77,4 +77,8 @@ export class LocalStorageService implements Repository {
     updateItem$(item, updatedItem):Observable<any> {
         return undefined;
     }
+}
+
+export class RecipeLocalStorageService extends LocalStorageService {
+    protected storageKey:string = 'recipes';
 }
