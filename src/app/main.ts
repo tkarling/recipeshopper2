@@ -2,11 +2,16 @@
 
 import {bootstrap} from "angular2/platform/browser";
 import {Component, provide, OpaqueToken} from "angular2/core";
+import {provideStore} from '@ngrx/store'
 
 import {SearchBox} from "./search/components/search-box";
 
 import {ProductInput} from "./product/components/product-input";
 import {ProductList, ProductListType} from "./product/components/product-list";
+
+import {RecipeInput} from "./recipe/recipe-input.component";
+import {RecipeList} from "./recipe/recipe-list.component";
+import {recipes} from './recipe/recipes.reducer';
 
 import {LocalStorageService} from "./services/local-storage-service";
 import {Repository, REPOSITORY_TOKEN} from './services/repository';
@@ -30,8 +35,8 @@ class AppMenu {
 
 @Component({
     selector: 'app',
-    directives: [ProductInput, ProductList, SearchBox, AppMenu],
-    providers: [provide(REPOSITORY_TOKEN, {useClass: LocalStorageService}), ProductService],
+    directives: [ProductInput, ProductList, RecipeInput, RecipeList, SearchBox, AppMenu],
+    providers: [provide(REPOSITORY_TOKEN, {useClass: LocalStorageService}), ProductService, provideStore({recipes})],
     template: `
     <style>
         .app-container {
@@ -74,7 +79,10 @@ class AppMenu {
                     </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-3">
-                    <div class="page-content">Hello From Recipies</div>
+                    <div class="page-content app-container">
+                        <recipe-input [hidden]="! showAdd"></recipe-input>
+                        <recipe-list></recipe-list>
+                    </div>
                 </section>
           </main>
     </div>`

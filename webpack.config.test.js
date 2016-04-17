@@ -33,7 +33,7 @@ module.exports = {
         noParse: [ path.join(__dirname, 'node_modules', 'angular2', 'bundles') ]
     },
 
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
 
     devServer: {
         historyApiFallback: true,
