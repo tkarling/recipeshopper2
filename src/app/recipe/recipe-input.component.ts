@@ -4,7 +4,7 @@ import {NgForm}    from 'angular2/common';
 import {provideStore, Store, Action} from '@ngrx/store'
 import {Observable} from 'rxjs/Rx'
 
-import {recipes} from './recipes.reducer';
+import {recipes, ADD_RECIPE} from './recipes.reducer';
 import {RecipeModel} from "./recipe.model";
 
 @Component({
@@ -69,13 +69,12 @@ export class RecipeInput {
 
     onSubmit() {
         if (this.adding) {
-            this.recipeModel.category = this.recipeModel.category || '';
+            this.recipeModel.category = this.recipeModel.category || 'UNKNOWN';
             this.store.dispatch(<Action>{
-                type: 'ADD_RECIPE', payload: {
+                type: ADD_RECIPE, payload: {
                     recipeModel: this.recipeModel
                 }
             });
-            //this.productService.addRecipe(this.recipeModel);
             this.recipeModel = new RecipeModel();
         } else { // editing
             //this.productService.stopEditing();

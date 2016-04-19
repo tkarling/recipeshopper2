@@ -5,11 +5,11 @@ export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const DELETE_RECIPE = 'DELETE_RECIPE';
 export const TOGGLE_ONLIST_RECIPE = 'TOGGLE_ONLIST_RECIPE';
 
+let idCounter = 0;
 export const recipes = (state = [], {type = '', payload = null}) => {
     switch(type){
         case ADD_RECIPE:
-            const recipe = (<any>Object).assign({}, payload.recipeModel, {id: state.length + 1});
-            console.log('recipe', recipe);
+            const recipe = (<any>Object).assign({}, payload.recipeModel, {id: idCounter++});
             return state.concat([recipe]);
             //return [payload.recipeModel, ...state];
         case UPDATE_RECIPE:

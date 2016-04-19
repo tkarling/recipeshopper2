@@ -2,6 +2,7 @@
 
 export class RecipeModel{
     onList: boolean = true;
+    id: string;
 
     constructor(
         public name:string = '',

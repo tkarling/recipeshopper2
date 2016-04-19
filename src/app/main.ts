@@ -9,7 +9,6 @@ import {SearchBox} from "./search/components/search-box";
 import {ProductInput} from "./product/components/product-input";
 import {ProductList, ProductListType} from "./product/components/product-list";
 
-import {RecipeInput} from "./recipe/recipe-input.component";
 import {RecipeList} from "./recipe/recipe-list.component";
 import {recipes} from './recipe/recipes.reducer';
 
@@ -35,7 +34,7 @@ class AppMenu {
 
 @Component({
     selector: 'app',
-    directives: [ProductInput, ProductList, RecipeInput, RecipeList, SearchBox, AppMenu],
+    directives: [ProductInput, ProductList, RecipeList, SearchBox, AppMenu],
     providers: [provide(REPOSITORY_TOKEN, {useClass: LocalStorageService}), ProductService, provideStore({recipes})],
     template: `
     <style>
@@ -80,8 +79,7 @@ class AppMenu {
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-3">
                     <div class="page-content app-container">
-                        <recipe-input [hidden]="! showAdd"></recipe-input>
-                        <recipe-list></recipe-list>
+                        <recipe-list [showAdd]="showAdd"></recipe-list>
                     </div>
                 </section>
           </main>
