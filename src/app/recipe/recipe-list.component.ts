@@ -2,6 +2,9 @@ import {Component, Injectable, Input} from 'angular2/core';
 import {provideStore, Store, Action} from '@ngrx/store';
 import {Observable} from 'rxjs/Rx'
 
+import {SearchPipe} from "../search/pipes/search-pipe";
+
+
 import {recipes, TOGGLE_ONLIST_RECIPE, DELETE_RECIPE} from './recipes.reducer';
 import {RecipeModel} from './recipe.model';
 import {RecipeItem} from './recipe-item.component';
@@ -9,6 +12,7 @@ import {RecipeInput} from './recipe-input.component';
 
 @Component({
     selector: 'recipe-list',
+    pipes: [SearchPipe],
     directives: [RecipeItem, RecipeInput],
     template: `
     <style>
@@ -20,7 +24,7 @@ import {RecipeInput} from './recipe-input.component';
         <!--{{diagnostic}}-->
         <recipe-input [hidden]="! showAdd && recipeCount > 0"></recipe-input>
         <ul class="mdl-list">
-            <li *ngFor="#recipe of recipes | async">
+            <li *ngFor="#recipe of recipes | async | search: term">
             <recipe-item
                 [recipe]="recipe"
                 [checked]="checked(recipe)"
@@ -34,6 +38,7 @@ import {RecipeInput} from './recipe-input.component';
 })
 export class RecipeList {
     @Input() showAdd;
+    @Input() term;
     recipes: Observable<any[]>;
     recipeCount: number = 0;
 

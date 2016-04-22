@@ -82,7 +82,7 @@ class AppMenu {
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-3">
                     <div class="page-content app-container">
-                        <recipe-list [showAdd]="showAdd"></recipe-list>
+                        <recipe-list [showAdd]="showAdd" [term]="term"></recipe-list>
                     </div>
                 </section>
           </main>

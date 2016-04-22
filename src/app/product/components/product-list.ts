@@ -11,6 +11,7 @@ import {ProductInput} from "./product-input";
 
 import {ProductService} from "../services/product-service";
 import {ProductModel} from "../services/product-model";
+import {OnlistPipe} from "../product-on-list.pipe";
 
 export enum ProductListType {
     shopping,
@@ -19,7 +20,7 @@ export enum ProductListType {
 
 @Component({
     selector: 'product-list',
-    pipes: [SearchPipe],
+    pipes: [SearchPipe, OnlistPipe],
     directives: [ProductItem, ProductInput],
     template: `
     <style>
@@ -32,7 +33,7 @@ export enum ProductListType {
         <product-input *ngIf="showAdd"
             (add)="addProduct($event)"></product-input>
         <ul class="mdl-list">
-            <li *ngFor="#product of products | async; #i = index">
+            <li *ngFor="#product of products | async | onlist: type | search: term; #i = index">
             <a pageScroll href="{{'#moi' + i}}"><span id="{{'moi' + i}}">
             <product-item *ngIf="! productService.editing(product)"
                 [product]="product"
@@ -66,18 +67,6 @@ export class ProductList {
 
     get lineThrough() {
         return this.type === ProductListType.shopping;
-    }
-
-    //get products() {
-    //    return this.type === ProductListType.shopping ? this.productService.shoppings : this.productService.favorites;
-    //}
-
-    get visibleProducts() {
-        if (this.type === ProductListType.shopping) {
-            return this.products;
-        } else {
-            return this.products;
-        }
     }
 
     checked(product) {
