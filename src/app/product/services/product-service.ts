@@ -4,14 +4,13 @@ import {ProductModel} from "./product-model";
 import {Repository, REPOSITORY_TOKEN} from '../../services/repository';
 import {LocalStorageService} from '../../services/local-storage-service';
 
-import {BoughtStatus,
-    DAIRY, GRAINS, VEGGIES_FRUIT, EXTRAS} from './product-model';
+import {DAIRY, GRAINS, VEGGIES_FRUIT, EXTRAS} from './product-model';
 
 @Injectable()
 export class ProductService {
     repository:Repository;
     products:ProductModel[] = [];
-    editingProduct:ProductModel = null;
+    editingProductKey:String = '';
 
     constructor(@Inject(REPOSITORY_TOKEN) repository:Repository) {
         if (repository && repository.getItems) {
@@ -43,15 +42,15 @@ export class ProductService {
     }
 
     editing(product:ProductModel) {
-        return this.editingProduct === product;
+        return this.editingProductKey === product.$key;
     }
 
     startEditing(product:ProductModel) {
-        this.editingProduct = product;
+        this.editingProductKey = product.$key;
     }
 
     stopEditing() {
-        this.editingProduct = null;
+        this.editingProductKey = '';
     }
 
     addProduct(product:ProductModel) {
@@ -72,16 +71,17 @@ export class ProductService {
         });
     }
 
-    toggleBought(product:ProductModel) {
-        const status = product.status === BoughtStatus.bought ? BoughtStatus.not_bought : BoughtStatus.bought;
-        const toggledProduct:ProductModel = <ProductModel>(<any>Object).assign({}, product, {status});
-
-        return this.updateProduct(product, <ProductModel>toggledProduct);
-    }
+    //toggleBought(product:ProductModel) {
+    //    const isBought = product.isBought === BoughtStatus.bought ? BoughtStatus.not_bought : BoughtStatus.bought;
+    //    const toggledProduct:ProductModel = <ProductModel>(<any>Object).assign({}, product, {isBought});
+    //
+    //    return this.updateProduct(product, <ProductModel>toggledProduct);
+    //}
 
     toggleOnList(product:ProductModel) {
         const onList = !product.onList;
-        const status = BoughtStatus.not_bought;
+        //const isBought = BoughtStatus.not_bought;
+        const status = false;
         const toggledProduct:ProductModel = <ProductModel>(<any>Object).assign({}, product, {onList, status});
 
         return this.updateProduct(product, toggledProduct);

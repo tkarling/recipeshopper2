@@ -1,7 +1,3 @@
-export enum BoughtStatus {
-    bought,
-    not_bought
-}
 
 export const FAVORITES = 'FAVORITES';
 
@@ -13,6 +9,7 @@ export const EXTRAS = 'EXTRAS';
 export const aisles: string[] = [DAIRY, GRAINS, VEGGIES_FRUIT, EXTRAS];
 
 export class ProductModel{
+    $key: string;
     recipe: string = FAVORITES;
     onList: boolean = true;
 
@@ -21,15 +18,8 @@ export class ProductModel{
         public aisle:string = '',
         public amount: string = '',
         public unit: string = '',
-        public status:BoughtStatus = BoughtStatus.not_bought
+        public isBought:boolean = false
     ){
-    }
-
-    toggle():void {
-        this.status =
-            this.status == BoughtStatus.bought
-                ? BoughtStatus.not_bought
-                : BoughtStatus.bought;
     }
 }
 

@@ -1,7 +1,6 @@
 import {Component, Inject, Input, Output, EventEmitter} from "angular2/core";
 import {NgForm}    from 'angular2/common';
 
-import {ProductService} from "../services/product-service";
 import {ProductModel, EXTRAS} from "../services/product-model";
 
 @Component({
@@ -19,7 +18,7 @@ import {ProductModel, EXTRAS} from "../services/product-model";
 
     </style>
     <div class="product-input">
-        <form (submit)="onSubmit()" #productForm="ngForm">
+        <form (ngSubmit)="onSubmit()" #productForm="ngForm">
             <!--{{diagnostic}}-->
             <div class="mdl-grid">
                 <div class="mdl-textfield mdl-js-textfield mdl-cell mdl-cell--1-col-phone mdl-cell--2-col">
@@ -60,26 +59,26 @@ import {ProductModel, EXTRAS} from "../services/product-model";
 })
 export class ProductInput {
     @Input() product;
+    @Output() add = new EventEmitter();
     @Output() update = new EventEmitter();
     productModel:ProductModel;
     adding: boolean;
 
-    constructor(public productService:ProductService) {
+    constructor() {
     }
 
     ngOnInit() {
         this.adding = ! this.product;
-        this.productModel = this.product ? (<any>Object).assign({}, this.product, {editing: true}) : new ProductModel();
-        //console.log('ngOnInit', this.adding, this.product, this.productModel);
+        this.productModel = this.product ? (<any>Object).assign({}, this.product) : new ProductModel();
+        delete this.productModel.$key;
     }
 
     onSubmit() {
         if(this.adding) {
             this.productModel.aisle = this.productModel.aisle || EXTRAS;
-            this.productService.addProduct(this.productModel);
+            this.add.emit(this.productModel);
             this.productModel = new ProductModel();
         } else { // editing
-            this.productService.stopEditing();
             this.update.emit(this.productModel);
         }
     }

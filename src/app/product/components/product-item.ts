@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from "angular2/core";
-import {ProductModel, BoughtStatus} from '../services/product-model';
+import {ProductModel} from '../services/product-model';
 
 import {ProductService} from "../services/product-service";
 
@@ -51,7 +51,7 @@ export class ProductItem {
     }
 
     myStyle(status) {
-        return this.lineThrough && this.product.status === BoughtStatus.bought ? 'bought': 'not-bought';
+        return this.lineThrough && this.product.isBought ? 'bought' : '';
     }
 }
 

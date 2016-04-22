@@ -2,7 +2,10 @@
 
 import {bootstrap} from "angular2/platform/browser";
 import {Component, provide, OpaqueToken} from "angular2/core";
-import {provideStore} from '@ngrx/store'
+import {provideStore} from '@ngrx/store';
+import {AngularFire, defaultFirebase, FIREBASE_PROVIDERS, FirebaseListObservable} from 'angularfire2';
+
+import {FB_BASE_PATH} from './config/constants';
 
 import {SearchBox} from "./search/components/search-box";
 
@@ -35,7 +38,9 @@ class AppMenu {
 @Component({
     selector: 'app',
     directives: [ProductInput, ProductList, RecipeList, SearchBox, AppMenu],
-    providers: [provide(REPOSITORY_TOKEN, {useClass: LocalStorageService}), ProductService, provideStore({recipes})],
+    providers: [
+        //FIREBASE_PROVIDERS, defaultFirebase(FB_BASE_PATH),
+        provide(REPOSITORY_TOKEN, {useClass: LocalStorageService}), ProductService, provideStore({recipes})],
     template: `
     <style>
         .app-container {
@@ -67,14 +72,12 @@ class AppMenu {
                 <!--{{diagnostic}}-->
                 <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
                     <div class="page-content app-container">
-                        <product-input [hidden]="! showAdd" ></product-input>
-                        <product-list [term]="term" [type]="ProductListType.shopping"></product-list>
+                        <product-list [showAdd]="showAdd" [term]="term" [type]="ProductListType.shopping"></product-list>
                     </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-2">
                     <div class="page-content app-container">
-                        <product-input [hidden]="! showAdd" ></product-input>
-                        <product-list [term]="term" [type]="ProductListType.favorites"></product-list>
+                        <product-list [showAdd]="showAdd" [term]="term" [type]="ProductListType.favorites"></product-list>
                     </div>
                 </section>
                 <section class="mdl-layout__tab-panel" id="fixed-tab-3">
@@ -93,8 +96,8 @@ class App {
     }
 
     // TODO: Remove this when we're done
-    get diagnostic() { return 'app: ' + JSON.stringify(ProductListType.shopping); }
+    get diagnostic() { return 'app: ' + JSON.stringify(FB_BASE_PATH); }
 }
 
-bootstrap(App);
+bootstrap(App, [FIREBASE_PROVIDERS, defaultFirebase(FB_BASE_PATH)]);
 
