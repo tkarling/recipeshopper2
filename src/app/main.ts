@@ -11,13 +11,10 @@ import {SearchBox} from "./search/components/search-box";
 
 import {ProductInput} from "./product/components/product-input";
 import {ProductList, ProductListType} from "./product/components/product-list";
+import {ProductsService} from "./product/products.service";
 
 import {RecipeList} from "./recipe/recipe-list.component";
 import {recipes} from './recipe/recipes.reducer';
-
-import {LocalStorageService} from "./services/local-storage-service";
-import {Repository, REPOSITORY_TOKEN} from './services/repository';
-import {ProductService} from "./product/services/product-service";
 
 
 @Component({
@@ -38,9 +35,7 @@ class AppMenu {
 @Component({
     selector: 'app',
     directives: [ProductInput, ProductList, RecipeList, SearchBox, AppMenu],
-    providers: [
-        //FIREBASE_PROVIDERS, defaultFirebase(FB_BASE_PATH),
-        provide(REPOSITORY_TOKEN, {useClass: LocalStorageService}), ProductService, provideStore({recipes})],
+    providers: [provideStore({recipes}), ProductsService],
     template: `
     <style>
         .app-container {

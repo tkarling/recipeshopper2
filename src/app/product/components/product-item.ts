@@ -1,8 +1,6 @@
 import {Component, Input, Output, EventEmitter} from "angular2/core";
 import {ProductModel} from '../services/product-model';
 
-import {ProductService} from "../services/product-service";
-
 const ICON_CHECKED = 'done';
 const ICON_NOT_CHECKED = 'check_box_outline_blank';
 
@@ -24,7 +22,7 @@ const ICON_NOT_CHECKED = 'check_box_outline_blank';
                 <i class="material-icons">{{checkboxIcon(checked)}}</i>
             </button>
         </span>
-        <span class="mdl-list__item-primary-content" (click)="productService.startEditing(product)">
+        <span class="mdl-list__item-primary-content" (click)="startEditing.emit(product)">
             <span [ngClass]="myStyle(product.status)">{{product.amount}} </span>
             <span [ngClass]="myStyle(product.status)">{{product.unit}} </span>
             <span [ngClass]="myStyle(product.status)">{{product.name}}</span>
@@ -43,8 +41,7 @@ export class ProductItem {
     @Input() lineThrough: boolean;
     @Output() toggle = new EventEmitter();
     @Output() remove = new EventEmitter();
-    constructor(public productService:ProductService) {
-    }
+    @Output() startEditing = new EventEmitter();
 
     checkboxIcon(status) {
         return status ? ICON_CHECKED: ICON_NOT_CHECKED;
