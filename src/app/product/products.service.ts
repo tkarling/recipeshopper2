@@ -2,14 +2,31 @@ import {Injectable, Inject} from "angular2/core";
 import {AngularFire, defaultFirebase, FIREBASE_PROVIDERS, FirebaseListObservable} from 'angularfire2';
 
 import {ProductModel} from "./services/product-model";
+//import {MockAngularFire} from './products.service.spec';
 
 @Injectable()
 export class ProductsService {
     products:FirebaseListObservable<any[]>;
     editingProductKey:String = '';
+    $items: any;
 
-    constructor(private angularFire: AngularFire) {
-        this.products = angularFire.database.list('/products');
+    constructor(angularFire: AngularFire) {
+        if(angularFire) {
+            this.products = angularFire.database.list('/products');
+        }
+    }
+
+    // for unit testing only
+    $setMock(mock: any) {
+        if(mock) {
+            this.products = mock.database.$me();
+            this.$items = mock.database.$list()
+        }
+    }
+
+    // for unit testing only
+    $products() {
+        return this.$items;
     }
 
     editing(product:ProductModel) {
@@ -42,7 +59,7 @@ export class ProductsService {
     }
 
     removeProduct(product:ProductModel) {
-        this.products.remove(product.$key);
+        this.products.remove(product);
     }
 
 }
